@@ -4,8 +4,10 @@ module.exports = (app) => {
         .get(BudgetContoller().index_home);
     app.route('/api/budgets')
         .get(BudgetContoller().list_budget);
-    app.route('/api/add')
+    app.route('/api/budget')
         .post(BudgetContoller().add_budget);
-    app.route('/api/edit/:id')
+    app.route('/api/budget/:id')
         .put(BudgetContoller().edit_budget);
+    app.route('/api/budget/:id')
+        .delete(BudgetContoller().delete_budget);
 }
