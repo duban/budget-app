@@ -6,4 +6,6 @@ module.exports = (app) => {
         .get(BudgetContoller().list_budget);
     app.route('/api/add')
         .post(BudgetContoller().add_budget);
+    app.route('/api/edit/:id')
+        .put(BudgetContoller().edit_budget);
 }
