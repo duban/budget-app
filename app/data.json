@@ -1,0 +1,15 @@
+[
+  {
+    "id": 1,
+    "budget": 50,
+    "expenses": 30
+  },
+  { "id": 2,
+    "budget": 30,
+    "expenses": 15
+  },
+  { "id": 3,
+    "budget": 20,
+    "expenses": 15
+  }
+]
