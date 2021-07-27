@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-var dataPath = './app/data.json'
+const dataPath = './app/data.json'
 const dataRaw = fs.readFileSync(dataPath);
+var data = JSON.parse(dataRaw)
 const BudgetController = () => {
     // var data = require('../data.json');
     // const file = require(data);
@@ -19,7 +20,6 @@ const BudgetController = () => {
         const { budget, expenses } = req.body;
         const balance = budget - expenses
         try {
-            var data = JSON.parse(dataRaw)
             var el = {id:data.data.length + 1,budget:budget,expenses:expenses,balance:balance}
             data.data.push(el)
             saveData(data)
@@ -65,10 +65,7 @@ const BudgetController = () => {
             //     });
             // }
         } catch (err) {
-            return res.status(500).json({
-                data: [],
-                message: "Error: " + err
-            });
+            return res.status(500).json({error: true, msg: 'Internal server error'});
         }
     };
     const edit_budget = async (req, res) => {
@@ -103,25 +100,32 @@ const BudgetController = () => {
                 // item.group = 4;
             // }
         } catch (err) {
-            return res.status(500).json({
-                data: [],
-                message: "Error: " + err
-            });
+            return res.status(500).json({error: true, msg: 'Internal server error'});
         }
     };
     const delete_budget = async (req, res) => {
         const id = req.params.id;
         try {
-            const index = data.findIndex(x => x.id === id);
-            // var item = data.find(x => x.id == id);
+            //filter the userdata to remove it
+            var findExist = data.data.find(x => x.id == id);
+            if (!findExist) {
+                return res.status(409).send({error: true, msg: 'id not exist'})
+            }
+                // return res.status(200).json({
+                //     data: data,
+                //     message:"successfully delete data "
+                // });
+            const index = data.data.findIndex(x => x.id === id);
+            // var item = data.data.find(x => x.id == id);
             if (index !== undefined) {
-                data.splice(index, 1)
+                data.data.splice(index, 1)
                 // console.log(index)
                 // const key = item['id'] = id
-                // delete item[id];
+                // delete data.data[id];
                 // item.budget = budget
                 // item.expenses = expenses
                 // item.balance = balance
+                console.log(data.data)
                 return res.status(200).json({
                     data: data,
                     message:"successfully delete data "
@@ -129,16 +133,13 @@ const BudgetController = () => {
                 // item.group = 4;
             }
         } catch (err) {
-            return res.status(500).json({
-                data: [],
-                message: "Error: " + err
-            });
+            return res.status(500).json({error: true, msg: 'Internal server error'});
         }
     };
     const list_budget = async (req, res) => {
-        const resp = JSON.parse(dataRaw)
+        const budgetData = JSON.parse(dataRaw)
         // console.log(dataRaw)
-        return res.status(200).json(resp);
+        return res.status(200).json(budgetData);
     };
     return {index_home,add_budget, list_budget,edit_budget, delete_budget}
 
