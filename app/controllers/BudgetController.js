@@ -6,9 +6,47 @@ const BudgetController = () => {
         });
     };
     const add_budget = async (req, res) => {
-        const {body} = req;
+        const { budget, expenses } = req.body;
+        const balance = budget - expenses
+        try {
+            var el = {id:data.length + 1,budget:budget,expenses:expenses,balance:balance}
+            var budgets = data.push(el)
+            if (budgets) {
+                return res.status(200).json({
+                    data: el,
+                    message:"successfully adding data "
+                });
+            }
+        } catch (err) {
+            return res.status(500).json({
+                data: [],
+                message: "Error: " + err
+            });
+        }
+    };
+    const edit_budget = async (req, res) => {
+        const { body } = req;
+        const id = req.params.id;
+        const { budget, expenses } = req.body;
+        const balance = budget - expenses
+        try {
+            var el = {id:data.length + 1,budget:budget,expenses:expenses,balance:balance}
+            var budgets = data.push(el)
+            if (budgets) {
+                return res.status(200).json({
+                    data: el,
+                    message:"successfully adding data "
+                });
+            }
+        } catch (err) {
+            return res.status(500).json({
+                data: [],
+                message: "Error: " + err
+            });
+        }
     };
     const list_budget = async (req, res) => {
+        console.log(data.length)
         return res.status(200).json({
             data
         });
