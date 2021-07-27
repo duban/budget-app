@@ -96,7 +96,7 @@ const BudgetController = () => {
             //     item.balance = balance
                 return res.status(200).json({
                     success: true,
-                    msg: 'Budget data updated successfully'});
+                    msg: `Budget with id ${id} has been updated`});
                 // item.group = 4;
             // }
         } catch (err) {
@@ -127,8 +127,8 @@ const BudgetController = () => {
                 // item.balance = balance
                 console.log(data.data)
                 return res.status(200).json({
-                    data: data,
-                    message:"successfully delete data "
+                    success: true,
+                    message:`Budget with id ${id} has been deleted`
                 });
                 // item.group = 4;
             }
@@ -137,9 +137,13 @@ const BudgetController = () => {
         }
     };
     const list_budget = async (req, res) => {
-        const budgetData = JSON.parse(dataRaw)
-        // console.log(dataRaw)
-        return res.status(200).json(budgetData);
+        try {
+            const budgetData = JSON.parse(dataRaw)
+            // console.log(dataRaw)
+            return res.status(200).json(budgetData);
+        } catch (err) {
+            return res.status(500).json({error: true, msg: 'Internal server error'});
+        }
     };
     return {index_home,add_budget, list_budget,edit_budget, delete_budget}
 
