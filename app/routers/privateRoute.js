@@ -4,4 +4,6 @@ module.exports = (app) => {
         .get(BudgetContoller().index_home);
     app.route('/api/budgets')
         .get(BudgetContoller().list_budget);
+    app.route('/api/add')
+        .post(BudgetContoller().add_budget);
 }
