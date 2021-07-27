@@ -75,20 +75,33 @@ const BudgetController = () => {
         const id = req.params.id;
         const { budget, expenses } = req.body;
         const balance = budget - expenses
+        // const budgetData = {id:parseInt(id),budget:budget,expenses:expenses,balance:balance}
+        var data = JSON.parse(dataRaw)
         try {
-            var item = data.find(x => x.id == id);
-            console.log(item)
-            fs.writeFileSync(data, JSON.stringify(data));
-            if (item) {
-                item.budget = budget
-                item.expenses = expenses
-                item.balance = balance
-                return res.status(200).json({
-                    data: item,
-                    message:"successfully update data "
-                });
-                // item.group = 4;
+            // const findExist = data.data.findIndex(x => x.id === id);
+            var findExist = data.data.find(x => x.id == id);
+            if (!findExist) {
+                return res.status(409).send({error: true, msg: 'id not exist'})
             }
+            const index = data.data.findIndex((obj => obj.id == id));
+            data.data[index].budget = budget
+            data.data[index].expenses = expenses
+            data.data[index].balance = balance
+            saveData(data)
+            // const updateBudget = data.data.filter( user => user.id !== id )
+            // updateBudget.push(budgetData)
+            // console.log(data)
+            // console.log(updateBudget)
+            // fs.writeFileSync(data, JSON.stringify(data));
+            // if (item) {
+            //     item.budget = budget
+            //     item.expenses = expenses
+            //     item.balance = balance
+                return res.status(200).json({
+                    success: true,
+                    msg: 'Budget data updated successfully'});
+                // item.group = 4;
+            // }
         } catch (err) {
             return res.status(500).json({
                 data: [],
@@ -124,7 +137,7 @@ const BudgetController = () => {
     };
     const list_budget = async (req, res) => {
         const resp = JSON.parse(dataRaw)
-        console.log(dataRaw)
+        // console.log(dataRaw)
         return res.status(200).json(resp);
     };
     return {index_home,add_budget, list_budget,edit_budget, delete_budget}
