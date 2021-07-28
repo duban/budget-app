@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const dataPath = './app/data.json'
+const viewPath = '../views/'
 const dataRaw = fs.readFileSync(dataPath);
 var data = JSON.parse(dataRaw)
 const BudgetController = () => {
@@ -140,7 +141,9 @@ const BudgetController = () => {
         try {
             const budgetData = JSON.parse(dataRaw)
             // console.log(dataRaw)
-            return res.status(200).json(budgetData);
+            console.log('dir',__dirname + '/../')
+            res.render(__dirname + '/..'+ '/views/index.html');
+            // return res.status(200).json(budgetData);
         } catch (err) {
             return res.status(500).json({error: true, msg: 'Internal server error'});
         }
