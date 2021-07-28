@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Budget App</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Budget App</h1>
+    </div>
+    <div class="budget-section">
+        <div class="budget col col-md col-sm">
+            <h2>budget</h2>
+            <img src="/image/money-bag.svg" width="40" alt="" />
+            <p class="amount">$ <span id="budgetAmount">0</span></p>
+        </div>
+        <div class="expenses col col-md col-sm">
+            <h2>expenses</h2>
+            <img src="/image/accounting.svg" width="40" alt="" />
+            <p class="exp-amount">$ <span id="expensesAmount">0</span></p>
+        </div>
+        <div class="balance col col-md col-sm">
+            <h2>balance</h2>
+            <img src="/image/law.svg" width="40" alt="" />
+            <p class="amount bala">$ <span id="balanceAmount">0</span></p>
+        </div>
+    </div>
+    <div id="displayExpenses">
+        <div class="budget-list">
+            <div class="col">
+                <h4>expense title</h4>
+            </div>
+            <div class="col">
+                <h4>expense value</h4>
+            </div>
+            <div class="col"></div>
+        </div>
+        <div id="expValue"></div>
+    </div>
+</div>
+<div class="toggle">
+    <button id="myBtn" type="button">+</button>
+</div>
+</div>
+</body>
+</html>
