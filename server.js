@@ -7,7 +7,12 @@ var express = require('express'),
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static(__dirname + '/app/views'));
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+app.set('views', __dirname);
 
+console.log(__dirname + '/app/views')
 var routes = require('./app/routers/privateRoute');
 routes(app);
 
