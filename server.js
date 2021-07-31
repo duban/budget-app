@@ -12,7 +12,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname);
 
-console.log(__dirname + '/app/views')
+// console.log(__dirname + '/app/views')
 var routes = require('./app/routers/privateRoute');
 routes(app);
 
