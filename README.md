@@ -1,6 +1,6 @@
 #### 1 Logic (Python)
 ```
-- python3 login.py
+- python3 logic.py
 ```
 
 #### 2 budget-app (Nodejs)
