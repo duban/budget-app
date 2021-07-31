@@ -12,18 +12,127 @@ const BudgetController = () => {
         const stringifyData = JSON.stringify(data)
         fs.writeFileSync(dataPath, stringifyData)
     }
+
+    const getData = () => {
+        const budgetData = JSON.parse(dataRaw)
+        return budgetData
+    }
+
+    const saveExpence = (data) => {
+        const stringifyData = JSON.stringify(data)
+        fs.writeFileSync(dataPath, stringifyData)
+    }
+
+    const render_index = async (req, res) => {
+        res.render(__dirname + '/../views/index.html', data);
+    };
+
     const index_home = async (req, res) => {
         return res.status(200).json({
             message: "Hello from budget api"
         });
     };
-    const add_budget = async (req, res) => {
-        const { budget, expenses } = req.body;
-        const balance = budget - expenses
+    const delete_expense = async (req, res) => {
+        const id = req.params.id;
+        const raw = getData()
+        var findExist = raw.expenses.find(expence => expence.id == id);
+        if (!findExist) {
+            return res.status(409).send({error: true, msg: 'id not exist'})
+        }
+        const index = raw.expenses.findIndex(expence => expence.id === id);
+        raw.balance = raw.balance + findExist.value
+        if (index !== undefined) {
+            raw.expenses.splice(index, 1)
+            saveData(raw)
+            return res.status(200).json({
+                success: true,
+                message:`Budget with id ${id} has been deleted`
+            });
+            // item.group = 4;
+        }
+    };
+
+    const edit_expense = async (req, res) => {
+        const id = req.params.id;
+        const title = req.body.title;
+        const value = req.body.value;
         try {
-            var el = {id:data.data.length + 1,budget:budget,expenses:expenses,balance:balance}
-            data.data.push(el)
-            saveData(data)
+            const raw = getData()
+            // const findExist = data.data.findIndex(x => x.id === id);
+            var findExist = raw.expenses.find(x => x.id == id);
+            if (!findExist) {
+                return res.status(409).send({error: true, msg: 'id not exist'})
+            }
+            const index = raw.expenses.findIndex((expence => expence.id == id));
+            const existValue = raw.expenses[index].value
+            raw.expenses[index].title = title
+            if (existValue > value) {
+                // console.log(existValue)
+                // console.log(newValue)
+                const balance = raw.balance - (existValue - value)
+                raw.expenses[index].value = value
+                raw.balance = balance
+                saveData(raw)
+            } else if (existValue < value) {
+                // console.log(existValue)
+                // console.log(newValue)
+                const balance = raw.balance - (value - existValue)
+                raw.expenses[index].value = value
+                raw.balance = balance
+                saveData(raw)
+
+            }
+                return res.status(200).json({
+                    data: raw,
+                    message:"successfully adding data "
+                });
+            // }
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({error: true, msg: 'Internal server error'});
+        }
+    };
+
+    const add_expense = async (req, res) => {
+        const title = req.body.title;
+        const value = req.body.value;
+        try {
+            const raw = getData()
+            if(raw.balance !== 0) {
+                const balance = raw.balance - value
+                raw.balance = balance
+                const expence = {id:raw.expenses.length + 1,title:title,value:value}
+
+                raw.expenses.push(expence)
+                saveExpence(raw)
+                return res.status(200).json({
+                    data: raw,
+                    message:"successfully adding data "
+                });
+            }
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({error: true, msg: 'Internal server error'});
+        }
+    };
+    const add_budget = async (req, res) => {
+        const budget = req.body.budget;
+        const balance = budget
+        // const title = null
+        // const expenses = 0
+        try {
+            // const raw = getData()
+            // console.log(raw.data)
+            // if(raw.data.budget)
+            var budgets = {budget:budget,expenses:[],balance:balance}
+            // console.log(budgets)
+            // data.data.push(el)
+            saveData(budgets)
+
+            return res.status(200).json({
+                data: budgets,
+                message:"successfully adding data "
+            });
 
 
             // fs.writeFileSync(dataPath, JSON.stringify(data));
@@ -55,10 +164,11 @@ const BudgetController = () => {
             //         console.log('complete');
             //     }
             // );
-            return res.status(200).json({
-                data: data.data,
-                message:"successfully adding data "
-            });
+            // res.render(__dirname + '/../views/add-budget.html', data);
+            // return res.status(200).json({
+            //     data: data.data,
+            //     message:"successfully adding data "
+            // });
             // if (budgets) {
             //     return res.status(200).json({
             //         data: data,
@@ -69,6 +179,9 @@ const BudgetController = () => {
             return res.status(500).json({error: true, msg: 'Internal server error'});
         }
     };
+
+
+
     const edit_budget = async (req, res) => {
         const id = req.params.id;
         const { budget, expenses } = req.body;
@@ -139,16 +252,15 @@ const BudgetController = () => {
     };
     const list_budget = async (req, res) => {
         try {
-            const budgetData = JSON.parse(dataRaw)
-            // console.log(dataRaw)
-            console.log('dir',__dirname + '/../')
-            res.render(__dirname + '/..'+ '/views/index.html');
-            // return res.status(200).json(budgetData);
+            var data = getData()
+            // console.log(budgetData)
+            // res.render(__dirname + '/../views/add-budget.html', budgetData);
+            return res.status(200).json(data);
         } catch (err) {
             return res.status(500).json({error: true, msg: 'Internal server error'});
         }
     };
-    return {index_home,add_budget, list_budget,edit_budget, delete_budget}
+    return {render_index,index_home,add_budget, add_expense, edit_expense ,delete_expense,list_budget,edit_budget, delete_budget}
 
 }
 module.exports = BudgetController;
