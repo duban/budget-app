@@ -3,7 +3,7 @@ module.exports = (app) => {
     app.route('/api/index')
         .get(BudgetContoller().index_home);
     app.route('/app/budget')
-        .get(BudgetContoller().render_index);
+        .get(BudgetContoller().app_home);
     app.route('/api/budgets')
         .get(BudgetContoller().list_budget);
     app.route('/api/budget')
