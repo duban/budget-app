@@ -8,11 +8,11 @@ module.exports = (app) => {
         .get(BudgetContoller().list_budget);
     app.route('/api/budget')
         .post(BudgetContoller().add_budget);
-    app.route('/api/expence')
+    app.route('/api/expense')
         .post(BudgetContoller().add_expense);
-    app.route('/api/expence/:id')
+    app.route('/api/expense/:id')
         .put(BudgetContoller().edit_expense);
-    app.route('/api/expence/:id')
+    app.route('/api/expense/:id')
         .delete(BudgetContoller().delete_expense);
     app.route('/api/budget/:id')
         .put(BudgetContoller().edit_budget);
