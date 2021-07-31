@@ -1,1 +1,1 @@
-{"data":[{"id":1,"budget":60,"expenses":30,"balance":30},{"id":2,"budget":100,"expenses":65,"balance":35},{"id":3,"budget":150,"expenses":85,"balance":65},{"id":4,"budget":50,"expenses":85,"balance":-35},{"id":5,"budget":150,"expenses":85,"balance":65}]}
+{"budget":1000,"expenses":[{"id":1,"title":"Kopi","value":100}],"balance":900}
