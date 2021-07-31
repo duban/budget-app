@@ -23,7 +23,7 @@ const BudgetController = () => {
         fs.writeFileSync(dataPath, stringifyData)
     }
 
-    const render_index = async (req, res) => {
+    const app_home = async (req, res) => {
         res.render(__dirname + '/../views/index.html', data);
     };
 
@@ -268,7 +268,7 @@ const BudgetController = () => {
             return res.status(500).json({error: true, msg: 'Internal server error'});
         }
     };
-    return {render_index,index_home,add_budget, add_expense, edit_expense ,delete_expense,list_budget,edit_budget, delete_budget}
+    return {app_home,index_home,add_budget, add_expense, edit_expense ,delete_expense,list_budget,edit_budget, delete_budget}
 
 }
 module.exports = BudgetController;
