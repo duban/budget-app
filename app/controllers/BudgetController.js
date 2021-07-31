@@ -43,6 +43,11 @@ const BudgetController = () => {
         raw.balance = raw.balance + findExist.value
         if (index !== undefined) {
             raw.expenses.splice(index, 1)
+            if (raw.expenses.length === 0) {
+                raw.budget = 0
+                raw.balance = 0
+                // console.log(raw)
+            }
             saveData(raw)
             return res.status(200).json({
                 success: true,
@@ -53,6 +58,7 @@ const BudgetController = () => {
     };
 
     const edit_expense = async (req, res) => {
+        console.log('ASU')
         const id = req.params.id;
         const title = req.body.title;
         const value = req.body.value;
@@ -82,6 +88,7 @@ const BudgetController = () => {
                 saveData(raw)
 
             }
+            console.log(raw)
                 return res.status(200).json({
                     data: raw,
                     message:"successfully adding data "
@@ -125,6 +132,7 @@ const BudgetController = () => {
             // console.log(raw.data)
             // if(raw.data.budget)
             var budgets = {budget:budget,expenses:[],balance:balance}
+            console.log(budget)
             // console.log(budgets)
             // data.data.push(el)
             saveData(budgets)
